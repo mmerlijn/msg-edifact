@@ -3,7 +3,6 @@
 namespace mmerlijn\msgEdifact\segments;
 
 use mmerlijn\msgRepo\Msg;
-use mmerlijn\msgRepo\OrderItem;
 
 class TXT extends Segment implements SegmentInterface
 {

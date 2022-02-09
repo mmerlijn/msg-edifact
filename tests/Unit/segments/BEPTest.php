@@ -4,8 +4,8 @@ namespace mmerlijn\msgEdifact\tests\Unit\segments;
 
 use mmerlijn\msgEdifact\Edifact;
 use mmerlijn\msgEdifact\tests\TestCase;
+use mmerlijn\msgRepo\Enums\ResultFlagEnum;
 use mmerlijn\msgRepo\Msg;
-use mmerlijn\msgRepo\OrderItem;
 use mmerlijn\msgRepo\Result;
 
 class BEPTest extends TestCase
@@ -46,8 +46,8 @@ BEP:1:1:6+0+Erythrocyten+4.4++10E12/l++3.8+5.6+ERY B MT'");
     public function test_abnormal_flag_setter()
     {
         $msg = new Msg();
-        $msg->order->addResult(new Result(value: 10, abnormal_flag: "H", test_name: "ABCD"));
-        $msg->order->addResult(new Result(value: 4, abnormal_flag: "L", test_name: "DCBA"));
+        $msg->order->addResult(new Result(value: 10, abnormal_flag: ResultFlagEnum::HIGH, test_name: "ABCD", test_code: "ABCD"));
+        $msg->order->addResult(new Result(value: 4, abnormal_flag: ResultFlagEnum::LOW, test_name: "DCBA", test_code: "DCBA"));
         $file = (new Edifact())->setMsg($msg)->write();
         $this->assertStringContainsString("BEP:1:1:1+0+ABCD+10+++>", $file);
         $this->assertStringContainsString("BEP:1:1:2+0+DCBA+4+++<", $file);

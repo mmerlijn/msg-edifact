@@ -3,6 +3,7 @@
 namespace mmerlijn\msgEdifact\segments;
 
 use mmerlijn\msgEdifact\validation\Validator;
+use mmerlijn\msgRepo\Enums\ResultFlagEnum;
 use mmerlijn\msgRepo\Msg;
 use mmerlijn\msgRepo\Result;
 
@@ -23,8 +24,8 @@ class BEP extends Segment implements SegmentInterface
             $result->test_name = $this->getData(2);
             $result->units = $this->getData(5);
             $result->references_range = trim($this->getData(7) . "-" . $this->getData(8), "-");
-            $result->abnormal_flag = ($this->getData(6) == ">") ? "H" : (($this->getData(6) == "<") ? "H" : "");
-            $result->change = $this->getData(4) ? "Y" : "N";
+            $result->abnormal_flag = ResultFlagEnum::set($this->getData(6));
+            $result->change = $this->getData(4) ? true : false;
             $msg->order->addResult($result);
         }
         return $msg;
@@ -42,10 +43,10 @@ class BEP extends Segment implements SegmentInterface
             $this->setData($range[1] ?? "", 8);
         }
         if ($result->abnormal_flag) {
-            $this->setData(($result->abnormal_flag == "L") ? "<" : (($result->abnormal_flag == "H") ? ">" : ""), 6);
+            $this->setData($result->abnormal_flag->getEdifact(), 6);
         }
         $this->setData($result->test_code, 9);
-        if ($result->change == "Y") {
+        if ($result->change) {
             $this->setData("C", 4); //TODO get the proper value
         }
         return $this;

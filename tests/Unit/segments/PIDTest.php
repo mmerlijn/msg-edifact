@@ -39,7 +39,7 @@ class PIDTest extends TestCase
     {
         $msg = $this->edifact->getMsg(new Msg());
         $array = $msg->toArray();
-        $this->assertSame('F', $msg->patient->sex);
+        $this->assertSame('F', $msg->patient->sex->value);
         $this->assertSame('F', $array['patient']['sex']);
     }
 
@@ -48,10 +48,10 @@ class PIDTest extends TestCase
         $msg = new Msg();
         $edifact = new Edifact();
         $msg->patient->dob = Carbon::create('2020-10-01');
-        $msg->patient->sex = "F";
+        $msg->patient->setSex("F");
         $edifact->setMsg($msg);
         $this->assertStringContainsString('PID+2020:10:01+V', $edifact->write());
-        $msg->patient->sex = "M";
+        $msg->patient->setSex("M");
         $edifact->setMsg($msg);
         $this->assertStringContainsString('PID+2020:10:01+M', $edifact->write());
     }
@@ -81,7 +81,7 @@ class PIDTest extends TestCase
         $msg->patient->name->prefix = 'van';
         $msg->patient->name->lastname = 'Groen';
         $msg->patient->name->initials = 'C';
-        $msg->patient->sex = "F";
+        $msg->patient->setSex("F");
         $edifact->setMsg($msg);
         $this->assertStringContainsString('V+Groen:van:Tra:van de::C', $edifact->write());
 
@@ -91,7 +91,7 @@ class PIDTest extends TestCase
         $msg->patient->name->own_lastname = 'Tra';
         $msg->patient->name->own_prefix = 'van de';
         $msg->patient->name->initials = 'C';
-        $msg->patient->sex = "M";
+        $msg->patient->setSex("M");
         $edifact->setMsg($msg);
         $this->assertStringContainsString('M+Tra:van de::::C', $edifact->write());
     }

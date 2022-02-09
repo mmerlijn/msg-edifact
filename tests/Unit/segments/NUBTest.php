@@ -28,9 +28,9 @@ class NUBTest extends TestCase
     public function test_order_setter()
     {
         $msg = new Msg();
-        $msg->order->addResult(new Result(done: true, test_name: "QQT"));
-        $msg->order->addResult(new Result(done: false, test_name: "BCA"));
-        $msg->order->addResult(new Result(done: false, test_name: "ABC"));
+        $msg->order->addResult(new Result(done: true, test_name: "QQT",test_code: "QQT",));
+        $msg->order->addResult(new Result(done: false, test_name: "BCA",test_code: "BCA"));
+        $msg->order->addResult(new Result(done: false, test_name: "ABC",test_code: "ABC"));
         $edifact = (new Edifact())->setMsg($msg);
         $edifact->write();
         $this->assertStringContainsString("NUB:1:1+BCA", $edifact->write());

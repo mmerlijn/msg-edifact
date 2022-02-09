@@ -101,11 +101,7 @@ class Segment implements SegmentInterface
 
     private function expandData(int $component, int $item): void
     {
-        for ($i = count($this->data); $i <= $component; $i++) {
-            $this->data[$i] = [];
-        }
-        for ($i = count($this->data[$component]); $i <= $item; $i++) {
-            $this->data[$component][$i] = "";
-        }
+        $this->data = array_pad($this->data, $component+1,[]);
+        $this->data[$component] = array_pad($this->data[$component], $item+1,"");
     }
 }

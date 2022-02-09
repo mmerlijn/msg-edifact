@@ -3,6 +3,7 @@
 namespace mmerlijn\msgEdifact\segments;
 
 use mmerlijn\msgEdifact\validation\Validator;
+use mmerlijn\msgRepo\Enums\PatientSexEnum;
 use mmerlijn\msgRepo\Msg;
 
 class PID extends Segment implements SegmentInterface
@@ -17,7 +18,7 @@ class PID extends Segment implements SegmentInterface
 
         //get patient name
         $msg->patient->name->initials = $this->getData(3, 5);
-        if ($msg->patient->sex == "F") {
+        if ($msg->patient->sex == PatientSexEnum::FEMALE) {
             $msg->patient->name->own_lastname = $this->getData(3, 2);
             $msg->patient->name->own_prefix = $this->getData(3, 3);
             $msg->patient->name->lastname = $this->getData(3);
@@ -43,11 +44,11 @@ class PID extends Segment implements SegmentInterface
             ->setData($msg->patient->dob?->format('d'), 1, 2)
 
             //set sex
-            ->setData(($msg->patient->sex == "M") ? "M" : ($msg->patient->sex == "F" ? "V" : $msg->patient->sex), 2)
+            ->setData($msg->patient->sex->getEdifact(), 2)
 
             //set name
             ->setData($msg->patient->name->initials, 3, 5);
-        if ($msg->patient->sex == "M") {
+        if ($msg->patient->sex == PatientSexEnum::MALE) {
             $this->setData($msg->patient->name->own_lastname, 3)
                 ->setData($msg->patient->name->own_prefix, 3, 1);
         } else {
