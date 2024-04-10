@@ -35,9 +35,9 @@ class Segment implements SegmentInterface
     {
         $output = "";
         foreach ($this->data as $component) {
-            $output .= trim(implode(":", $component), ":") . "+";
+            $output .= rtrim(implode(":", $component), ":") . "+";
         }
-        return trim($output, "+");
+        return rtrim($output, "+");
     }
 
     public function getMsg(Msg $msg): Msg

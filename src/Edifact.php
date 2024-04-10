@@ -111,9 +111,18 @@ class Edifact
         }
         return $this;
     }
+    //helper function to set specific segment values
+    public function setSegmentValue(string $SEG, string $value, int $component, int $item = 0): self
+    {
+        $key = $this->findSegmentKey($SEG);
+        if ($key < count($this->segments)) {
+            $this->segments[$key]->setData($value, $component, $item);
+        }
+        return $this;
+    }
 
     //search for first segment occurrence
-    public function findSegmentKey(string $SEG)
+    public function findSegmentKey(string $SEG): int|string
     {
         foreach ($this->segments as $k => $segment) {
             if ($segment->name == $SEG) {
