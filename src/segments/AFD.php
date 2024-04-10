@@ -28,7 +28,7 @@ class AFD extends Segment implements SegmentInterface
     {
         $this
             //set name
-            ->setData($msg->sender->organisation?->name, 1)
+            ->setData($msg->sender->organisation?->department, 1)
             //set phone
             ->setData((string)$msg->sender->organisation?->phone ?: (string)$msg->sender->phone, 2);
     }

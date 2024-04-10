@@ -30,10 +30,10 @@ class PAD extends Segment implements SegmentInterface
             ->setData($msg->patient->address->street, 1)
             ->setData($msg->patient->address->building, 1, 1)
             ->setData($msg->patient->address->city, 1, 3)
-            ->setData($msg->patient->address->postcode, 1, 4)
-
-            //phone
-            ->setData($msg->patient->phones[0] ?? "", 2);
+            ->setData($msg->patient->address->postcode, 1, 4);
+        if(($msg->patient->phones[0] ?? '') != 'nb') {
+            $this->setData($msg->patient->phones[0] ?? "", 2);
+        }
 
     }
 
