@@ -23,7 +23,7 @@ class BEP extends Segment implements SegmentInterface
             $result->test_code = $this->getData(9);
             $result->test_name = $this->getData(2);
             $result->units = $this->getData(5);
-            $result->references_range = trim($this->getData(7) . "-" . $this->getData(8), "-");
+            $result->reference_range = trim($this->getData(7) . "-" . $this->getData(8), "-");
             $result->abnormal_flag = ResultFlagEnum::set($this->getData(6));
             $result->change = $this->getData(4) ? true : false;
             $msg->order->addResult($result);
@@ -37,8 +37,8 @@ class BEP extends Segment implements SegmentInterface
         $this->setData($result->test_name, 2);
         $this->setData($result->value, 3);
         $this->setData($result->units, 5);
-        if ($result->references_range) {
-            $range = explode("-", $result->references_range);
+        if ($result->reference_range) {
+            $range = explode("-", $result->reference_range);
             $this->setData($range[0] ?? "", 7);
             $this->setData($range[1] ?? "", 8);
         }
