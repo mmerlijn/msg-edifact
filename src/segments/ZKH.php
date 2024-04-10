@@ -15,16 +15,16 @@ class ZKH extends Segment implements SegmentInterface
             $msg->sender->setOrganisation();
         }
         //sender name
-        $msg->sender->organisation->short_name = $this->getData(1);
+        $msg->sender->organisation->short = $this->getData(1);
         if (!$msg->sender->organisation->name)
             $msg->sender->organisation->name = $this->getData(1);
 
         //sender address
         $msg->sender->address = new Address(
-            street: $this->getData(2),
-            building: $this->getData(2, 1),
+            postcode: $this->getData(2, 4),
             city: $this->getData(2, 3),
-            postcode: $this->getData(2, 4)
+            street: $this->getData(2),
+            building: $this->getData(2, 1)
         );
 
         //sender phone
@@ -37,7 +37,7 @@ class ZKH extends Segment implements SegmentInterface
     {
         $this
             //sender name
-            ->setData($msg->sender->organisation?->short_name ?: $msg->sender->organisation?->name, 1)
+            ->setData($msg->sender->organisation?->short ?: $msg->sender->organisation?->name, 1)
             //address
             ->setData($msg->sender->address?->street, 2)
             ->setData($msg->sender->address?->building, 2, 1)
@@ -63,7 +63,7 @@ class ZKH extends Segment implements SegmentInterface
             "sender_city" => 'required',
             "sender_postcode" => 'required',
         ], [
-            'sender_name' => '@ ZKH[1][0] set $msg->sender->organisation->short_name',
+            'sender_name' => '@ ZKH[1][0] set $msg->sender->organisation->short',
             "sender_street" => '@ ZKH[2][0] set $msg->sender->address->street',
             "sender_building" => '@ ZKH[2][1] set $msg->sender->address->building',
             "sender_city" => '@ ZKH[2][3] set $msg->sender->address->city',

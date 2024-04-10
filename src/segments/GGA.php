@@ -15,7 +15,7 @@ class GGA extends Segment implements SegmentInterface
     public function getMsg(Msg $msg): Msg
     {
         //sender name
-        $msg->sender->setOrganisation(new Organisation(short_name: $this->getData(1)));
+        $msg->sender->setOrganisation(new Organisation(short: $this->getData(1)));
 
         //department
         $msg->sender->organisation->department = $this->getData(2);
@@ -25,10 +25,10 @@ class GGA extends Segment implements SegmentInterface
 
         //sender address
         $msg->sender->setAddress(new Address(
-            street: $this->getData(4),
-            building: $this->getData(4, 1),
+            postcode: $this->getData(4, 4),
             city: $this->getData(4, 3),
-            postcode: $this->getData(4, 4)
+            street: $this->getData(4),
+            building: $this->getData(4, 1)
         ));
 
         if (!$msg->sender->phone)
@@ -42,7 +42,7 @@ class GGA extends Segment implements SegmentInterface
     {
         $this
             //set name
-            ->setData($msg->sender->organisation?->short_name ?: $msg->sender->organisation?->name, 1)
+            ->setData($msg->sender->organisation?->short ?: $msg->sender->organisation?->name, 1)
             ->setData($msg->sender->organisation?->department, 2)
             ->setData($msg->sender->organisation?->name, 3)
             //address
