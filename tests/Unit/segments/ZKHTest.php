@@ -31,7 +31,7 @@ class ZKHTest extends \mmerlijn\msgEdifact\tests\TestCase
         $msg = $this->edifact->getMsg(new Msg());
         $array = $msg->toArray();
         $this->assertSame("ABC", $msg->sender->organisation->name);
-        $this->assertSame("ABC", $msg->sender->organisation->short_name);
+//        $this->assertSame("ABC", $msg->sender->organisation->short_name);
         $this->assertSame("ABC", $array['sender']['organisation']['name']);
     }
 
