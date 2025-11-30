@@ -8,7 +8,7 @@ use mmerlijn\msgRepo\Msg;
 use mmerlijn\msgRepo\Phone;
 
 class ART extends Segment implements SegmentInterface
-{
+{//Wordt niet standaard gebruikt in Edifact
     public function getMsg(Msg $msg): Msg
     {
         //get requester
@@ -19,10 +19,10 @@ class ART extends Segment implements SegmentInterface
         }
         $msg->order->requester->name->name = $this->getData(3);
         $msg->order->requester->setAddress(
-            new Address(street: $this->getData(4),
-                building: $this->getData(4, 1),
+            new Address(postcode: $this->getData(4, 4),
                 city: $this->getData(4, 3),
-                postcode: $this->getData(4, 4)
+                street: $this->getData(4),
+                building: $this->getData(4, 1)
             ));
         //get phone
         $msg->order->requester->setPhone($this->getData(5));

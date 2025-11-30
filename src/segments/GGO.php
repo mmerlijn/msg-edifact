@@ -17,10 +17,10 @@ class GGO extends Segment implements SegmentInterface
 
         //receiver address
         $msg->receiver->address = new Address(
-            street: $this->getData(4),
-            building: $this->getData(4, 1),
+            postcode: $this->getData(4, 4),
             city: $this->getData(4, 3),
-            postcode: $this->getData(4, 4)
+            street: $this->getData(4),
+            building: $this->getData(4, 1)
         );
         return $msg;
     }

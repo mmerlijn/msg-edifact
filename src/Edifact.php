@@ -82,27 +82,31 @@ class Edifact
         foreach ($this->segments as $k => $segment) {
             $this->segments[$k]->setMsg($msg);
         }
+
         //set results
-        if (!empty($msg->order->results)) {
+        if ($msg->order->hasRequests()) {
             $teller_BEP = 1;
             $teller_NUB = 1;
-            foreach ($msg->order->results as $k => $result) {
-                if ($result->done) {
-                    array_splice($this->segments, $this->findSegmentKey("IDE") + 1, 0, [(new BEP("BEP:1:1:$teller_BEP"))->setResult($result)]);
-                    $teller_OPB = 1;
-                    foreach ($result->comments as $comment) {
-                        array_splice($this->segments, $this->findSegmentKey("BEP") + 1, 0, [(new OPB("OPB:1:1:$teller_BEP:$teller_OPB"))->setComment($comment)]);
-                        $teller_OPB++;
+            foreach ($msg->order->requests as $request) {
+
+                foreach ($request->observations as $observation) {
+                    if ($observation->value) {
+                        array_splice($this->segments, $this->findSegmentKey("IDE") + 1, 0, [(new BEP("BEP:1:1:$teller_BEP"))->setResult($observation)]);
+                        $teller_OPB = 1;
+                        foreach ($observation->comments as $comment) {
+                            array_splice($this->segments, $this->findSegmentKey("BEP") + 1, 0, [(new OPB("OPB:1:1:$teller_BEP:$teller_OPB"))->setComment($comment)]);
+                            $teller_OPB++;
+                        }
+                        $teller_BEP++;
+                    } else {
+                        array_splice($this->segments, $this->findSegmentKey("UNT"), 0, [(new NUB("NUB:1:$teller_NUB+"))->setResult($observation)]);
+                        $teller_NUB++;
                     }
-                    $teller_BEP++;
-                } else {
-                    array_splice($this->segments, $this->findSegmentKey("UNT"), 0, [(new NUB("NUB:1:$teller_NUB+"))->setResult($result)]);
-                    $teller_NUB++;
                 }
             }
         }
         //zet comments
-        if (!empty($msg->comments)) {
+        if ($msg->hasComments()) {
             $teller_TXT = 1;
             foreach ($msg->comments as $comment) {
                 array_splice($this->segments, $this->findSegmentKey("GGO"), 0, [(new TXT("TXT:$teller_TXT"))->setComment($comment)]);
@@ -111,6 +115,7 @@ class Edifact
         }
         return $this;
     }
+
     //helper function to set specific segment values
     public function setSegmentValue(string $SEG, string $value, int $component, int $item = 0): self
     {

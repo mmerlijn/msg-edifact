@@ -10,7 +10,7 @@ class IDE extends Segment implements SegmentInterface
     public function getMsg(Msg $msg): Msg
     {
         //order complete
-        $msg->order->complete = ($this->getData(1) == "N") ? false : true;
+        $msg->order->complete = !(($this->getData(1) == "N"));
 
         //identification nr (lab_nr)
         $msg->order->lab_nr = $this->getData(2);

@@ -9,13 +9,13 @@ use mmerlijn\msgRepo\Organisation;
 use mmerlijn\msgRepo\Phone;
 
 class AFD extends Segment implements SegmentInterface
-{
+{ //Wordt niet standaard gebruikt in Edifact
     public function getMsg(Msg $msg): Msg
     {
         if (!$msg->sender->organisation)
             $msg->sender->setOrganisation();
-        //get name
-        $msg->sender->organisation->name = $this->getData(1);
+        //get department name
+        $msg->sender->organisation->department = $this->getData(1);
 
         //get phone
         $msg->sender->organisation->setPhone($this->getData(2));
@@ -36,13 +36,13 @@ class AFD extends Segment implements SegmentInterface
     public function validate(): void
     {
         Validator::validate([
-            "sender_organisation_name" => $this->data[1][0] ?? "",
+            "sender_organisation_department" => $this->data[1][0] ?? "",
             "sender_organisation_phone" => $this->data[2][0] ?? "",
         ], [
-            "sender_organisation_name" => 'required|max:70',
+            "sender_organisation_department" => 'required|max:70',
             "sender_organisation_phone" => 'max:20',
         ], [
-            "sender_organisation_name" => '@ AFD[1][0] set/adjust $msg->sender->organisation->name',
+            "sender_organisation_department" => '@ AFD[1][0] set/adjust $msg->sender->organisation->department',
             "sender_organisation_phone" => '@ AFD[2][0] adjust $msg->sender->organisation->phone',
         ]);
     }

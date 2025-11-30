@@ -2,6 +2,7 @@
 
 namespace mmerlijn\msgEdifact\segments;
 
+use mmerlijn\msgRepo\Comment;
 use mmerlijn\msgRepo\Msg;
 
 class TXT extends Segment implements SegmentInterface
@@ -15,9 +16,9 @@ class TXT extends Segment implements SegmentInterface
         return $msg;
     }
 
-    public function setComment(string $comment): self
+    public function setComment(Comment $comment): self
     {
-        $this->setData($comment, 1);
+        $this->setData($comment->text, 1);
 
         return $this;
     }

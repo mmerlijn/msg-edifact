@@ -13,8 +13,8 @@ class PAD extends Segment implements SegmentInterface
     {
         //get address
         $msg->patient->address = new Address(
-            street: $this->getData(1), building: $this->getData(1, 1),
-            city: $this->getData(1, 3), postcode: $this->getData(1, 4)
+            postcode: $this->getData(1, 4), city: $this->getData(1, 3),
+            street: $this->getData(1), building: $this->getData(1, 1)
         );
 
         //get phone

@@ -6,7 +6,6 @@ use mmerlijn\msgEdifact\validation\Validator;
 
 class ValidatorTest extends \mmerlijn\msgEdifact\tests\TestCase
 {
-
     public function test_basic_validation()
     {
         $data = [

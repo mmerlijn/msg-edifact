@@ -8,13 +8,13 @@ use mmerlijn\msgRepo\Msg;
 use mmerlijn\msgRepo\Phone;
 
 class ARA extends Segment implements SegmentInterface
-{
+{//alleen in MEDLAB
     public function getMsg(Msg $msg): Msg
     {
         //get contact name
         $msg->sender->name->name = $this->getData(1);
         //get contact phone
-        if (!$msg->sender->phone)
+        if (!$msg->sender->phone->number)
             $msg->sender->setPhone($this->getData(2));
         return $msg;
     }

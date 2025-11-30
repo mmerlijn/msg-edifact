@@ -13,7 +13,7 @@ class DET extends Segment implements SegmentInterface
     public function getMsg(Msg $msg): Msg
     {
         //get name
-        $msg->order->dt_of_observation = Carbon::createFromFormat("ymdHi",
+        $msg->order->observation_at = Carbon::createFromFormat("ymdHi",
             $this->getData(1) .
             $this->getData(1, 1) .
             $this->getData(1, 2) .
@@ -27,11 +27,11 @@ class DET extends Segment implements SegmentInterface
     {
         $this
             //set name
-            ->setData($msg->order->dt_of_observation?->format("y"), 1)
-            ->setData($msg->order->dt_of_observation?->format("m"), 1, 1)
-            ->setData($msg->order->dt_of_observation?->format("d"), 1, 2)
-            ->setData($msg->order->dt_of_observation?->format("H"), 2)
-            ->setData($msg->order->dt_of_observation?->format("i"), 2, 1);
+            ->setData($msg->order->observation_at?->format("y"), 1)
+            ->setData($msg->order->observation_at?->format("m"), 1, 1)
+            ->setData($msg->order->observation_at?->format("d"), 1, 2)
+            ->setData($msg->order->observation_at?->format("H"), 2)
+            ->setData($msg->order->observation_at?->format("i"), 2, 1);
     }
 
     public function validate(): void
