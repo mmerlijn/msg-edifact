@@ -114,12 +114,12 @@ class Edifact
             }
         }
         //zet comments
-        if ($msg->hasComments()) {
+        if ($this->type=='MEDVRI' and $msg->hasComments()) {
 
             $teller_TXT = 1;
             foreach ($msg->comments as $comment) {
                 foreach ($this->splitComments($comment->text, 70) as $part) {
-                    array_splice($this->segments, $this->findSegmentKey("PID"), 0, [(new TXT("TXT:$teller_TXT"))->setComment($part)]);
+                    array_splice($this->segments, $this->findSegmentKey("GGO"), 0, [(new TXT("TXT:$teller_TXT"))->setComment($part)]);
                     $teller_TXT++;
                 }
             }

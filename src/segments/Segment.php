@@ -70,7 +70,7 @@ class Segment implements SegmentInterface
         return preg_replace('/\?(\'|\?|\:|\+)/', '$1', $this->data[$component][$item] ?? "");
     }
 
-    protected function lineToComponents()
+    protected function lineToComponents(): void
     {
         $this->resetData();
         $components = preg_split('/(?<!\?)\\+/', $this->line);
@@ -79,13 +79,13 @@ class Segment implements SegmentInterface
         }
     }
 
-    protected function componentsToElements(int $k, string $component)
+    protected function componentsToElements(int $k, string $component): void
     {
         $elements = preg_split('/(?<!\?)\\:/', $component);
         $this->data[$k] = $elements;
     }
 
-    protected function setName()
+    protected function setName(): void
     {
         $this->name = substr($this->line, 0, 3);
     }

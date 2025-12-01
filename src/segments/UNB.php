@@ -32,8 +32,8 @@ class UNB extends Segment implements SegmentInterface
     {
 
         $this
-            //agbcode sender
-            ->setData($msg->sender->agbcode, 2)
+           //agbcode sender
+           ->setData($msg->sender->agbcode, 2)
 
             //agbcode reveiver
             ->setData($msg->receiver->agbcode ?: $msg->order->requester->agbcode, 3)
