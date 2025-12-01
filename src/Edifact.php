@@ -84,7 +84,7 @@ class Edifact
         }
 
         //set results
-        if ($msg->order->hasRequests()) {
+        if ($this->type == 'MEDLAB' and $msg->order->hasRequests()) {
             $teller_BEP = 1;
             $teller_NUB = 1;
             foreach ($msg->order->requests as $request) {
