@@ -13,13 +13,15 @@ it('can set segment', function () {
             value: 10,
             test: new TestCode(code: "AB  34 D", value: "ABCD"),
             units: "mmol",
-            comments: [new Comment("today"), new Comment("tomorrow"), new Comment("yesterday")]
+            comments: [new Comment("today"), new Comment("tomorrow"), new Comment("yesterday, dit is een hele lange opmerking tekst met meer dan 70 karakters om te kijken of het goed wordt afgebroken in meerdere regels in de edifact boodschap")],
         ));
     $file = (new Edifact())->setMsg($msg)->write();
-    expect($file)->toContain("OPB:1:1:1:1+today")
-        ->and($file)->toContain("OPB:1:1:1:2+tomorrow")
-        ->and($file)->toContain("OPB:1:1:1:3+yesterday")
-        ->and($file)->toContain("BEP:1:1:1+0+ABCD+10++mmol++++AB  34 D");
+    expect($file)->toContain("OPB:1:1:1:1+today'")
+        ->toContain("OPB:1:1:1:2+tomorrow'")
+        ->toContain("OPB:1:1:1:3+yesterday, dit is een hele lange opmerking tekst met meer dan 70'")
+        ->toContain("OPB:1:1:1:4+karakters om te kijken of het goed wordt afgebroken in meerdere'")
+        ->toContain("OPB:1:1:1:5+regels in de edifact boodschap'")
+        ->toContain("BEP:1:1:1+0+ABCD+10++mmol++++AB  34 D");
 });
 
 it('can get segment', function () {

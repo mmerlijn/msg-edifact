@@ -92,11 +92,19 @@ class Edifact
                 foreach ($request->observations as $observation) {
                     if ($observation->value) {
                         array_splice($this->segments, $this->findSegmentKey("IDE") + 1, 0, [(new BEP("BEP:1:1:$teller_BEP"))->setResult($observation)]);
-                        $teller_OPB = 1;
+
+                        $ct=[];
                         foreach ($observation->comments as $comment) {
-                            array_splice($this->segments, $this->findSegmentKey("BEP") + 1, 0, [(new OPB("OPB:1:1:$teller_BEP:$teller_OPB"))->setComment($comment)]);
-                            $teller_OPB++;
+                            foreach ($this->splitComments($comment->text, 70) as $part) {
+                                $ct[]=$part;
+                            }
                         }
+                        $teller_OPB = count($ct);
+                        foreach (array_reverse($ct) as $part) {
+                            array_splice($this->segments, $this->findSegmentKey("BEP") + 1, 0, [(new OPB("OPB:1:1:$teller_BEP:{$teller_OPB}"))->setComment($part)]);
+                            $teller_OPB--;
+                        }
+
                         $teller_BEP++;
                     } else {
                         array_splice($this->segments, $this->findSegmentKey("UNT"), 0, [(new NUB("NUB:1:$teller_NUB+"))->setResult($observation)]);

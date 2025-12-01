@@ -19,9 +19,9 @@ class OPB extends Segment implements SegmentInterface
         return $msg;
     }
 
-    public function setComment(Comment $comment): self
+    public function setComment(string $comment): self
     {
-        $this->setData($comment->text, 1);
+        $this->setData($comment, 1);
 
         return $this;
     }
