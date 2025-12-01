@@ -24,6 +24,7 @@ class UNB extends Segment implements SegmentInterface
         );
         //msg reference
         $msg->processing_id = $this->getData(5);
+        $msg->id = $this->getData(5);
         return $msg;
     }
 
@@ -42,7 +43,7 @@ class UNB extends Segment implements SegmentInterface
             ->setData($msg->datetime->format("Hi"), 4, 1)
 
             //msg reference
-            ->setData($msg->processing_id, 5);
+            ->setData($msg->processing_id?:$msg->id, 5);
 
     }
 

@@ -21,3 +21,15 @@ it('can set segment', function () {
         ->and($file)->toContain("GGA") //only for medvri
         ->and($file)->toContain("GGO");
 });
+
+it('can set long comment', function () {
+    $msg = new Msg();
+    $msg->msgType->type = "MEDVRI";
+    $msg->addComment("Deze zin is heel erg lang en zal dus opgesplitst moeten worden in meerdere TXT segmenten om goed weergegeven te kunnen worden in het EDIFACT bericht.");
+    $file = (new Edifact())->setMsg($msg)->write();
+    expect($file)->toContain("TXT:1+Deze zin is heel erg lang en zal dus opgesplitst moeten worden in'")
+        ->toContain("TXT:2+meerdere TXT segmenten om goed weergegeven te kunnen worden in het'")
+        ->toContain("TXT:3+EDIFACT bericht.'")
+        ->toContain("GGA") //only for medvri
+        ->toContain("GGO");
+});

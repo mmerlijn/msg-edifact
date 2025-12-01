@@ -107,10 +107,13 @@ class Edifact
         }
         //zet comments
         if ($msg->hasComments()) {
+
             $teller_TXT = 1;
             foreach ($msg->comments as $comment) {
-                array_splice($this->segments, $this->findSegmentKey("GGO"), 0, [(new TXT("TXT:$teller_TXT"))->setComment($comment)]);
-                $teller_TXT++;
+                foreach ($this->splitComments($comment->text, 70) as $part) {
+                    array_splice($this->segments, $this->findSegmentKey("PID"), 0, [(new TXT("TXT:$teller_TXT"))->setComment($part)]);
+                    $teller_TXT++;
+                }
             }
         }
         return $this;
@@ -185,5 +188,23 @@ class Edifact
                 new UNZ("UNZ+1+"),
             ];
         }
+    }
+
+    private function splitComments(string $comment, int $length = 70): array
+    {
+        $comments = [];
+        while (strlen($comment) > $length) {
+            $part = substr($comment, 0, $length);
+            $lastSpace = strrpos($part, ' ');
+            if ($lastSpace !== false) {
+                $part = substr($comment, 0, $lastSpace);
+            }
+            $comments[] = trim($part);
+            $comment = trim(substr($comment, strlen($part)));
+        }
+        if (strlen($comment) > 0) {
+            $comments[] = trim($comment);
+        }
+        return $comments;
     }
 }

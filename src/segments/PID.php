@@ -57,7 +57,10 @@ class PID extends Segment implements SegmentInterface
                 ->setData($msg->patient->name->own_lastname, 3, 2)
                 ->setData($msg->patient->name->own_prefix, 3, 3);
         }
-        $this->setData("BSN" . $msg->patient->getBsn(), 5);
+        if($msg->patient->getBsn()){
+            $this->setData("BSN" . $msg->patient->getBsn(), 5);
+        }
+
     }
 
     public function validate(): void
