@@ -60,14 +60,14 @@ class Segment implements SegmentInterface
         if (!($this->data[$component][$item] ?? false)) {
             $this->expandData($component, $item);
         }
-        $this->data[$component][$item] = preg_replace('/(\'|\?|\:|\+)/', '?$1', $value ?? "");
+        $this->data[$component][$item] = preg_replace('/([\'?:+])/', '?$1', preg_replace('/\r\n|\r|\n/',' ',$value ?? ""));
         return $this;
     }
 
     //todo string escape
     public function getData(int $component, int $item = 0): string
     {
-        return preg_replace('/\?(\'|\?|\:|\+)/', '$1', $this->data[$component][$item] ?? "");
+        return preg_replace('/\?(\'|\?|\:|\|\r\n|\r|\n+)/', '$1', $this->data[$component][$item] ?? "");
     }
 
     protected function lineToComponents(): void
