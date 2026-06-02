@@ -34,7 +34,7 @@ it('can write edifact MEDLAB', function () {
     ));
     $repo->setOrder($order);
     $repo->addComment("Dit is een comment over een patiënt");
-    $vrij = new Edifact();
+    $vrij = new mmerlijn\msgEdifact\Edifact();
     $vrij->setMsg($repo);
     expect($vrij->write())->toContain("UNB+UNOA:") //phone number is nb
     ->toContain("PID+2000:01:01+M+Groot:de::::J++BSN123456782'")
@@ -64,3 +64,9 @@ it('can write edifact MEDVRI', function () {
         ->toContain("UNZ");
 });
 
+it('can read edifact MEDVRI', function () {
+    $edifact = "
+";
+    $msg = new Edifact($edifact)->getMsg();
+    dd($msg->order);
+});

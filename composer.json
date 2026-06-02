@@ -13,7 +13,7 @@
   "require": {
     "php": "^8.2",
     "mmerlijn/msg-repo": "~3",
-    "nesbot/carbon": "~3.8.4"
+    "nesbot/carbon": "~3.8"
   },
   "require-dev": {
     "larapack/dd": "^1.1",

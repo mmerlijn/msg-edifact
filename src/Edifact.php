@@ -64,8 +64,11 @@ class Edifact
         return $output;
     }
 
-    public function getMsg(Msg $msg): Msg
+    public function getMsg(?Msg $msg=null): Msg
     {
+        if(!$msg){
+            $msg = new Msg();
+        }
         foreach ($this->segments as $segment) {
             $msg = $segment->getMsg($msg);
         }
@@ -210,9 +213,9 @@ class Edifact
             $comments[] = trim($part);
             $comment = trim(substr($comment, strlen($part)));
         }
-        if (strlen($comment) > 0) {
+        //if (strlen($comment) > 0) {
             $comments[] = trim($comment);
-        }
+        //}
         return $comments;
     }
 }
