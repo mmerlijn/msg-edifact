@@ -6,7 +6,7 @@ use mmerlijn\msgEdifact\validation\Validator;
 use mmerlijn\msgRepo\Address;
 use mmerlijn\msgRepo\Msg;
 use mmerlijn\msgRepo\Name;
-use mmerlijn\msgRepo\Organisation;
+use mmerlijn\msgRepo\Organization;
 use mmerlijn\msgRepo\Phone;
 
 //MEDVRI
@@ -15,13 +15,13 @@ class GGA extends Segment implements SegmentInterface
     public function getMsg(Msg $msg): Msg
     {
         //sender name
-        $msg->sender->setOrganisation(new Organisation(short: $this->getData(1)));
+        $msg->sender->setOrganization(new Organization(short: $this->getData(1)));
 
         //department
-        $msg->sender->organisation->department = $this->getData(2);
+        $msg->sender->organization->department = $this->getData(2);
 
         //get name
-        $msg->sender->organisation->name = $this->getData(3);
+        $msg->sender->organization->name = $this->getData(3);
 
         //sender address
         $msg->sender->setAddress(new Address(
@@ -33,8 +33,8 @@ class GGA extends Segment implements SegmentInterface
 
         if (!$msg->sender->phone)
             $msg->sender->setPhone($this->getData(5));
-        if (!$msg->sender->organisation->phone)
-            $msg->sender->organisation->setPhone($this->getData(5));
+        if (!$msg->sender->organization->phone)
+            $msg->sender->organization->setPhone($this->getData(5));
         return $msg;
     }
 
@@ -42,16 +42,16 @@ class GGA extends Segment implements SegmentInterface
     {
         $this
             //set name
-            ->setData($msg->sender->organisation?->short ?: $msg->sender->organisation?->name, 1)
-            ->setData($msg->sender->organisation?->department, 2)
-            ->setData($msg->sender->organisation?->name, 3)
+            ->setData($msg->sender->organization?->short ?: $msg->sender->organization?->name, 1)
+            ->setData($msg->sender->organization?->department, 2)
+            ->setData($msg->sender->organization?->name, 3)
             //address
             ->setData($msg->sender->address?->street, 4)
             ->setData($msg->sender->address?->building, 4, 1)
             ->setData($msg->sender->address?->city, 4, 3)
             ->setData($msg->sender->address?->postcode, 4, 4)
             //set phone
-            ->setData((string)$msg->sender->phone ?: (string)$msg->sender->organisation?->phone, 5);
+            ->setData((string)$msg->sender->phone ?: (string)$msg->sender->organization?->phone, 5);
     }
 
     public function validate(): void
@@ -73,9 +73,9 @@ class GGA extends Segment implements SegmentInterface
             "sender_city" => "required",
             "sender_postcode" => "required",
         ], [
-            "sender_name" => '@ GGA[1][0] set/adjust $msg->sender->organisation->name',
-            "sender_department" => '@ GGA[2][0] set/adjust $msg->sender->organisation->department',
-            "sender_facility" => '@ GGA[3][0] set/adjust $msg->sender->organisation->name',
+            "sender_name" => '@ GGA[1][0] set/adjust $msg->sender->organization->name',
+            "sender_department" => '@ GGA[2][0] set/adjust $msg->sender->organization->department',
+            "sender_facility" => '@ GGA[3][0] set/adjust $msg->sender->organization->name',
             "sender_street" => '@ GGA[][0] set/adjust $msg->sender->address->street',
             "sender_building" => '@ GGA[][0] set/adjust $msg->sender->address->building',
             "sender_city" => '@ GGA[][0] set/adjust $msg->sender->address->city',

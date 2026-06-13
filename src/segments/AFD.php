@@ -5,20 +5,20 @@ namespace mmerlijn\msgEdifact\segments;
 use mmerlijn\msgEdifact\validation\Validator;
 use mmerlijn\msgRepo\Address;
 use mmerlijn\msgRepo\Msg;
-use mmerlijn\msgRepo\Organisation;
+use mmerlijn\msgRepo\Organization;
 use mmerlijn\msgRepo\Phone;
 
 class AFD extends Segment implements SegmentInterface
 { //Wordt niet standaard gebruikt in Edifact
     public function getMsg(Msg $msg): Msg
     {
-        if (!$msg->sender->organisation)
-            $msg->sender->setOrganisation();
+        if (!$msg->sender->organization)
+            $msg->sender->setOrganization();
         //get department name
-        $msg->sender->organisation->department = $this->getData(1);
+        $msg->sender->organization->department = $this->getData(1);
 
         //get phone
-        $msg->sender->organisation->setPhone($this->getData(2));
+        $msg->sender->organization->setPhone($this->getData(2));
         if (!$msg->sender->phone)
             $msg->sender->setPhone($this->getData(2));
         return $msg;
@@ -28,22 +28,22 @@ class AFD extends Segment implements SegmentInterface
     {
         $this
             //set name
-            ->setData($msg->sender->organisation?->department, 1)
+            ->setData($msg->sender->organization?->department, 1)
             //set phone
-            ->setData((string)$msg->sender->organisation?->phone ?: (string)$msg->sender->phone, 2);
+            ->setData((string)$msg->sender->organization?->phone ?: (string)$msg->sender->phone, 2);
     }
 
     public function validate(): void
     {
         Validator::validate([
-            "sender_organisation_department" => $this->data[1][0] ?? "",
-            "sender_organisation_phone" => $this->data[2][0] ?? "",
+            "sender_organization_department" => $this->data[1][0] ?? "",
+            "sender_organization_phone" => $this->data[2][0] ?? "",
         ], [
-            "sender_organisation_department" => 'required|max:70',
-            "sender_organisation_phone" => 'max:20',
+            "sender_organization_department" => 'required|max:70',
+            "sender_organization_phone" => 'max:20',
         ], [
-            "sender_organisation_department" => '@ AFD[1][0] set/adjust $msg->sender->organisation->department',
-            "sender_organisation_phone" => '@ AFD[2][0] adjust $msg->sender->organisation->phone',
+            "sender_organization_department" => '@ AFD[1][0] set/adjust $msg->sender->organization->department',
+            "sender_organization_phone" => '@ AFD[2][0] adjust $msg->sender->organization->phone',
         ]);
     }
 }
