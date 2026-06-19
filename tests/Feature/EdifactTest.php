@@ -69,4 +69,4 @@ it('can read edifact MEDVRI', function () {
 ";
     $msg = new Edifact($edifact)->getMsg();
     dd($msg->order);
-});
+})->skip();

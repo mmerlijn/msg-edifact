@@ -7,7 +7,7 @@ use mmerlijn\msgRepo\Msg;
 it('can set segment', function () {
     $msg = new Msg();
     $edifact = new Edifact();
-    $msg->sender->setOrganisation(['name' => 'ABC']);
+    $msg->sender->setOrganization(['name' => 'ABC']);
     $msg->sender->address = new Address(postcode: "1000AA", city: "'s Grave", street: "Race Street", building: "34a");
     $msg->sender->setPhone("1122334455");
     $edifact->setMsg($msg);
@@ -19,7 +19,7 @@ it('can set segment', function () {
 it('can get segment', function () {
     $edifact = new Edifact("ZKH+ABC+Street:10b::?'s Sands:1000BB+0123-456789'");
     $msg = $edifact->getMsg(new Msg());
-    expect($msg->sender->organisation->name)->toBe('ABC')
+    expect($msg->sender->organization->name)->toBe('ABC')
         ->and($msg->sender->address->street)->toBe('Street')
         ->and($msg->sender->address->building)->toBe('10 b')
         ->and($msg->sender->address->building_nr)->toBe('10')
